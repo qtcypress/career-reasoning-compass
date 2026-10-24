@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture
+- AI calls go through `src/lib/ai.server.ts` (provider chosen by `AI_PROVIDER` env: lovable default, openai, groq) so keys can be swapped without touching features.
