@@ -14,6 +14,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "AI assessments, personalised roadmaps, coding practice, mock interviews and an AI thinking coach for engineering students." },
       { property: "og:title", content: "CareerPilot — AI Career Readiness & Placement Prep" },
       { property: "og:description", content: "Explore, assess, learn, practice and get hired with AI-guided career readiness." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

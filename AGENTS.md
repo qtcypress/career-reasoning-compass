@@ -10,4 +10,4 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
-- AI calls go through `src/lib/ai.server.ts` (provider chosen by `AI_PROVIDER` env: lovable default, openai, groq) so keys can be swapped without touching features.
+- AI calls go through `src/lib/ai.server.ts`; Groq is the default and uses the linked custom connector gateway server-side, while other providers require explicit `AI_PROVIDER` selection, so the coach never silently falls back to built-in AI when Groq is unavailable.

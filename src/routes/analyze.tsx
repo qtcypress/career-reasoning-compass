@@ -19,6 +19,8 @@ export const Route = createFileRoute("/analyze")({
       { name: "description", content: "Plan a solution, get a % correctness score, see your mistakes and fix your thinking with a 2-step AI mentor." },
       { property: "og:title", content: "AI Thinking Coach | CareerPilot" },
       { property: "og:description", content: "Get your solution plan scored and your thinking corrected by an AI mentor." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Analyze,
