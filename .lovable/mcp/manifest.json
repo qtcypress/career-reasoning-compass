@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "sdk_version": "3.3.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://rnybbsvsrpnjiidttwig.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "careerpilot-ai",
+      "version": "0.1.0",
+      "title": "CareerPilot AI"
+    },
+    "tools": [
+      {
+        "name": "search_problems",
+        "title": "Search coding problems",
+        "description": "Find curated coding interview questions by search, topic, and difficulty.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "maxLength": 200,
+              "default": ""
+            },
+            "difficulty": {
+              "type": "string",
+              "enum": [
+                "All",
+                "Easy",
+                "Medium",
+                "Hard"
+              ],
+              "default": "All"
+            },
+            "topic": {
+              "type": "string",
+              "default": "All"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_problem",
+        "title": "Read coding question",
+        "description": "Read the full statement, examples, and constraints for a problem ID returned by search_problems.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "problem_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "problem_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_career_paths",
+        "title": "List career paths",
+        "description": "List all nine CareerPilot career paths and their core skills.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_interview_scores",
+        "title": "Read my interview scores",
+        "description": "Read up to 50 of the signed-in caller's recent interview scores; other users' scores are never included.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "track_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
