@@ -7,3 +7,11 @@
 - [ ] Add questions for all nine home-page career tracks and technical/HR rounds.
 - [ ] Add Groq scoring, private saved history, and score summaries.
 - [ ] Add sign-in and verify a complete interview with saved results.
+
+# Assessments
+- [ ] Add programming, data structures, and algorithms quizzes with scores and weak areas.
+- [ ] Verify scoring and answer review.
+
+# Resume builder
+- [ ] Add editable resumes tailored to all nine career paths.
+- [ ] Add PDF downloads and verify the generated resume.
