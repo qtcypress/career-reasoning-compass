@@ -1,19 +1,16 @@
+import { CAREERS } from "./careers";
+import { PATH_QUIZZES } from "./assessment-quizzes";
+
 export type QuizQuestion = { id: string; topic: string; question: string; options: string[]; correct: number; explanation: string };
-export const QUIZ: QuizQuestion[] = [
-  { id: "scope", topic: "Programming concepts", question: "What is the main purpose of a local variable's scope?", options: ["To increase its memory size", "To define where it can be accessed", "To make it global", "To persist it on disk"], correct: 1, explanation: "Scope controls the region of a program where a name is accessible." },
-  { id: "oop", topic: "Programming concepts", question: "Which OOP principle hides implementation details behind a public interface?", options: ["Recursion", "Sorting", "Encapsulation", "Iteration"], correct: 2, explanation: "Encapsulation groups state and behavior while controlling access to implementation details." },
-  { id: "recursion", topic: "Programming concepts", question: "What must a recursive function have to stop calling itself?", options: ["A base case reachable from recursive calls", "A global counter in every case", "Two loops", "A sorted input"], correct: 0, explanation: "A reachable base case terminates recursion; calls must progress toward it." },
-  { id: "reference", topic: "Programming concepts", question: "Two variables refer to the same mutable object. What happens when one changes a field?", options: ["The other variable becomes null", "The object is automatically copied", "Nothing can change", "Both references observe the changed object"], correct: 3, explanation: "Aliased references point to the same object rather than independent copies." },
-  { id: "stack", topic: "Data structures", question: "Which structure naturally matches undoing the most recent action first?", options: ["Queue", "Stack", "Sorted array", "Graph"], correct: 1, explanation: "A stack is last-in, first-out, matching the order of undo operations." },
-  { id: "queue", topic: "Data structures", question: "Which structure processes tasks in their arrival order?", options: ["Stack", "Hash set", "Queue", "Binary search tree"], correct: 2, explanation: "A queue is first-in, first-out." },
-  { id: "hash", topic: "Data structures", question: "What is the average lookup time of a well-designed hash table?", options: ["O(1)", "O(n log n)", "O(n²)", "O(log n) always"], correct: 0, explanation: "Hash tables offer expected constant-time lookup with good hashing and controlled load; worst-case lookup can be linear." },
-  { id: "list", topic: "Data structures", question: "With a reference to a singly linked list node, what is the time to insert directly after it?", options: ["O(n²)", "O(n)", "O(log n)", "O(1)"], correct: 3, explanation: "Only a constant number of pointer assignments is needed when the insertion node is already known." },
-  { id: "binary", topic: "Algorithms", question: "What precondition is needed for ordinary binary search on an array?", options: ["Every value is positive", "The array is sorted by the comparison used", "Length is a power of two", "No duplicates exist"], correct: 1, explanation: "Binary search discards halves based on sorted order; duplicates and arbitrary lengths are allowed." },
-  { id: "bfs", topic: "Algorithms", question: "Which traversal finds shortest path lengths in an unweighted graph?", options: ["Depth-first search in all cases", "Merge sort", "Breadth-first search", "Binary search"], correct: 2, explanation: "BFS explores vertices by increasing distance from the source using a queue." },
-  { id: "complexity", topic: "Algorithms", question: "Two nested loops each run n times independently. What is the time complexity?", options: ["O(n²)", "O(n)", "O(log n)", "O(1)"], correct: 0, explanation: "The inner operation runs n × n times." },
-  { id: "dp", topic: "Algorithms", question: "Why store previously computed subproblem results in dynamic programming?", options: ["To require recursion", "To sort every input", "To remove all memory use", "To avoid solving overlapping subproblems repeatedly"], correct: 3, explanation: "Memoization or tabulation reuses solutions to overlapping subproblems." },
-];
-export const QUIZ_TOPICS = ["Programming concepts", "Data structures", "Algorithms"];
+
+export function quizFor(trackId: string): QuizQuestion[] {
+  return PATH_QUIZZES[trackId] ?? [];
+}
+
+export function quizTopics(trackId: string): string[] {
+  return [...new Set(quizFor(trackId).map((q) => q.topic))];
+}
+
 export function gradeQuiz(questions: QuizQuestion[], answers: Record<string, number>) {
   const correct = questions.filter((q) => answers[q.id] === q.correct).length;
   const areas = [...new Set(questions.map((q) => q.topic))].map((topic) => {
@@ -23,3 +20,5 @@ export function gradeQuiz(questions: QuizQuestion[], answers: Record<string, num
   });
   return { correct, total: questions.length, score: questions.length ? Math.round(correct / questions.length * 100) : 0, areas, weakAreas: areas.filter((a) => a.correct < a.total) };
 }
+
+export { CAREERS };
