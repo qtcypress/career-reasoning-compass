@@ -17,10 +17,11 @@ export function SiteHeader() {
           <a href="/#careers" className="hover:text-foreground">Careers</a>
           <a href="/#journey" className="hover:text-foreground">Journey</a>
           <a href="/#features" className="hover:text-foreground">Features</a>
+          <Link to="/problems" className="hover:text-foreground">Problem Bank</Link>
           <Link to="/analyze" className="hover:text-foreground">AI Thinking Coach</Link>
         </nav>
         <Button asChild variant="hero" size="sm">
-          <Link to="/analyze">Try AI Evaluator</Link>
+          <Link to="/problems">Practice coding</Link>
         </Button>
       </div>
     </header>

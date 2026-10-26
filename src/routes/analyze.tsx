@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { SiteHeader } from "@/components/SiteHeader";
+import { ProblemStatement } from "@/components/ProblemStatement";
+import { getProblem, PROBLEMS, problemPrompt } from "@/lib/problems";
 import {
   evaluatePlan, mentorStep1, mentorStep2,
   type Evaluation, type MentorHint, type MentorFinal,
 } from "@/lib/analyzer.functions";
 
 export const Route = createFileRoute("/analyze")({
+  validateSearch: (search: Record<string, unknown>): { problem?: string } => typeof search["problem"] === "string" ? { problem: search["problem"] } : {},
   head: () => ({
     meta: [
       { title: "AI Thinking Coach — Evaluate Your Problem-Solving | CareerPilot" },
@@ -23,14 +26,14 @@ export const Route = createFileRoute("/analyze")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Analyze,
+  component: CoachPage,
 });
 
-const SAMPLES = [
-  "Detect duplicate UPI transactions in a live payment stream. A transaction is a duplicate if the same sender, receiver and amount appear within 60 seconds.",
-  "Allocate K adjacent seats for a group in a movie hall with R rows and C columns where some seats are already booked. Return the best row (closest to the screen center).",
-  "Build an LRU cache for 'Continue Watching' that stores the last N shows a user watched with O(1) get and put.",
-];
+function CoachPage() {
+  const search = Route.useSearch();
+  const selected = getProblem(search.problem) ?? PROBLEMS[0];
+  return <Analyze key={selected?.id} selectedId={selected?.id} />;
+}
 
 function scoreTone(n: number) {
   return n >= 75 ? "text-success" : n >= 45 ? "text-accent" : "text-destructive";
@@ -49,12 +52,14 @@ function Stepper({ step }: { step: number }) {
   );
 }
 
-function Analyze() {
+function Analyze({ selectedId }: { selectedId: string | undefined }) {
   const evalFn = useServerFn(evaluatePlan);
   const m1Fn = useServerFn(mentorStep1);
   const m2Fn = useServerFn(mentorStep2);
 
-  const [problem, setProblem] = useState(SAMPLES[0] ?? "");
+  const selected = getProblem(selectedId);
+  const [custom, setCustom] = useState(false);
+  const [problem, setProblem] = useState(selected ? problemPrompt(selected) : "");
   const [plan, setPlan] = useState("");
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
   const [hint, setHint] = useState<MentorHint | null>(null);
@@ -84,15 +89,14 @@ function Analyze() {
         {/* Step 1 */}
         <section className="mt-8 rounded-2xl border bg-card p-6 shadow-elegant">
           <h2 className="text-lg font-semibold">1. The problem</h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {SAMPLES.map((s, i) => (
-              <Button key={i} size="sm" variant={problem === s ? "default" : "outline"} onClick={() => { setProblem(s); reset(); }}>Sample {i + 1}</Button>
-            ))}
+          <div className="my-4 flex flex-wrap gap-2">
+            <Button asChild size="sm" variant="outline" disabled={!!busy}><Link to="/problems">Browse problem bank</Link></Button>
+            <Button size="sm" variant="outline" disabled={!!evaluation || !!busy} onClick={() => { const next = !custom; setCustom(next); setProblem(next ? "" : selected ? problemPrompt(selected) : ""); reset(); }}>{custom ? "Use selected question" : "Write my own problem"}</Button>
           </div>
-          <Textarea className="mt-3 min-h-24" value={problem} onChange={(e) => setProblem(e.target.value)} placeholder="Paste or write a problem…" disabled={!!evaluation} />
+          {!custom && selected ? <ProblemStatement problem={selected} /> : <Textarea aria-label="Custom problem" className="mt-3 min-h-24" value={problem} onChange={(e) => setProblem(e.target.value)} placeholder="Paste or write a problem…" disabled={!!evaluation} />}
           <h2 className="mt-6 text-lg font-semibold">Your planned solution</h2>
           <p className="text-sm text-muted-foreground">Describe your approach step by step — data structures, logic, edge cases, complexity. No code needed.</p>
-          <Textarea className="mt-3 min-h-40" value={plan} onChange={(e) => setPlan(e.target.value)} placeholder={"1. I'll store each transaction in…\n2. For every new one I check…\n3. Edge cases…"} disabled={!!evaluation} />
+          <Textarea aria-label="Your planned solution" className="mt-3 min-h-40" value={plan} onChange={(e) => setPlan(e.target.value)} placeholder={"1. I'll use this data structure…\n2. For each element I check…\n3. Edge cases and complexity…"} disabled={!!evaluation} />
           {!evaluation && (
             <Button variant="hero" className="mt-4" disabled={!problem.trim() || plan.trim().length < 15 || !!busy}
               onClick={() => run("eval", () => evalFn({ data: { problem, plan } }), setEvaluation)}>

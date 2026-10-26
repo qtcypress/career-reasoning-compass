@@ -10,4 +10,5 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
+- Keep the curated problem catalog in a shared browser-safe module; problem pages and coach prompts use the same statements, examples, and constraints to prevent evaluation drift.
 - AI calls go through `src/lib/ai.server.ts`; Groq is the default and uses the linked custom connector gateway server-side, while other providers require explicit `AI_PROVIDER` selection, so the coach never silently falls back to built-in AI when Groq is unavailable.
