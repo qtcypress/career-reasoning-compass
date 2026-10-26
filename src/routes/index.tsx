@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 import hero from "@/assets/hero.jpg";
 import { PROBLEMS } from "@/lib/problems";
+import { CAREERS } from "@/lib/careers";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,17 +28,6 @@ const steps = [
   { icon: SearchCheck, t: "Find Gaps", d: "See what's strong, weak or missing before placements expose it." },
   { icon: Map, t: "Get Your Roadmap", d: "Know what to learn next based on your stage, goals and assessment." },
   { icon: Rocket, t: "Become Career-Ready", d: "Build skills, communication, resume and interview confidence." },
-];
-const careers = [
-  ["Java Full Stack", "Java · Spring Boot · React · Microservices · SQL"],
-  ["MERN Full Stack", "MongoDB · Express · React · Node.js · TypeScript"],
-  ["Data Analytics", "Excel · SQL · Power BI · Python · Statistics"],
-  ["Data Science", "Python · Statistics · ML · Pandas · Visualization"],
-  ["AI & Machine Learning", "Python · ML · Deep Learning · NLP · MLOps"],
-  ["Generative AI", "LLMs · RAG · Embeddings · Vector DB · Prompting"],
-  ["Agentic AI", "Agents · LLMs · RAG · MCP · LangGraph"],
-  ["Cyber Security", "Networks · Cloud Security · SOC · Ethical Hacking"],
-  ["Cloud & DevOps", "AWS · Docker · Kubernetes · CI/CD · Terraform"],
 ];
 const years = [
   ["Year 1", "Explore", "Discover career paths, build fundamentals and coding habits."],
@@ -111,11 +101,11 @@ function Index() {
           <h2 className="text-3xl font-bold md:text-4xl">One platform. Many career possibilities.</h2>
           <p className="mt-3 max-w-xl text-muted-foreground">Explore the paths, understand the skills, build toward the career you want.</p>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {careers.map(([t, s]) => (
-              <div key={t} className="group rounded-xl border bg-card p-5 transition hover:-translate-y-1 hover:shadow-elegant">
-                <h3 className="font-semibold">{t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{s}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">Explore <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+            {CAREERS.map((c) => (
+              <div key={c.id} className="group rounded-xl border bg-card p-5 transition hover:-translate-y-1 hover:shadow-elegant">
+                <h3 className="font-semibold">{c.name}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{c.skills}</p>
+                <Button asChild variant="link" className="mt-4 h-auto px-0"><Link to="/interviews" search={{ track: c.id }}>Practice interview <ArrowRight className="h-4 w-4" /></Link></Button>
               </div>
             ))}
           </div>
@@ -144,6 +134,9 @@ function Index() {
                 <f.icon className="h-6 w-6 text-accent" />
                 <h3 className="mt-4 font-semibold">{f.t}</h3>
                 <p className="mt-1 text-sm text-ink-foreground/70">{f.d}</p>
+                {f.t === "Mock Interviews" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/interviews">Start interview <ArrowRight /></Link></Button>}
+                {f.t === "Resume & Profile" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/resume">Build resume <ArrowRight /></Link></Button>}
+                {f.t === "Aptitude & Reasoning" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/assessments">Assess programming & DSA <ArrowRight /></Link></Button>}
               </div>
             ))}
           </div>
