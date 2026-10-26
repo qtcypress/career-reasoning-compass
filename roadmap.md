@@ -12,8 +12,8 @@
 # Assessments
 - [x] Add programming, data structures, and algorithms quizzes with scores and weak areas.
 - [x] Verify scoring and answer review.
-- [ ] Expand assessments to all nine career paths with per-path concept quizzes and weak areas.
-- [ ] Verify per-path quiz scoring and weak areas in browser.
+- [x] Expand assessments to all nine career paths with per-path concept quizzes and weak areas.
+- [x] Verify per-path quiz scoring and weak areas in browser (Cyber Security: 25%, three weak topics listed).
 
 # Resume builder
 - [x] Add editable resumes tailored to all nine career paths.
