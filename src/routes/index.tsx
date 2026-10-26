@@ -134,6 +134,9 @@ function Index() {
                 <f.icon className="h-6 w-6 text-accent" />
                 <h3 className="mt-4 font-semibold">{f.t}</h3>
                 <p className="mt-1 text-sm text-ink-foreground/70">{f.d}</p>
+                {f.t === "Mock Interviews" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/interviews">Start interview <ArrowRight /></Link></Button>}
+                {f.t === "Resume & Profile" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/resume">Build resume <ArrowRight /></Link></Button>}
+                {f.t === "Aptitude & Reasoning" && <Button asChild variant="ghostLight" size="sm" className="mt-4"><Link to="/assessments">Assess programming & DSA <ArrowRight /></Link></Button>}
               </div>
             ))}
           </div>
