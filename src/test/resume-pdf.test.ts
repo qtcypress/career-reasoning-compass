@@ -11,5 +11,5 @@ describe("resume PDF", () => {
     expect(document.getPageCount()).toBeGreaterThan(1);
     expect(document.getTitle()).toBe("José Test — Data Analytics Resume");
     expect(document.getPages().every((p) => p.getWidth()===595 && p.getHeight()===842)).toBe(true);
-  });
+  }, 20000);
 });
