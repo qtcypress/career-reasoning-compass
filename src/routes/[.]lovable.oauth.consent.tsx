@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>) => ({ authorization_id: typeof s.authorization_id === "string" ? s.authorization_id : "" }),
+  validateSearch: (s: Record<string, unknown>) => ({ authorization_id: typeof s['authorization_id'] === "string" ? s['authorization_id'] : "" }),
   head: () => ({ meta: [{ title: "Connect an assistant | CareerPilot AI" }, { name: "description", content: "Review assistant access to your CareerPilot account." }, { property: "og:title", content: "Connect an assistant | CareerPilot AI" }, { property: "og:description", content: "Approve or cancel secure assistant access." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   beforeLoad: async ({ search, location }) => {
     if (!search.authorization_id) throw new Error("This connection request is missing its authorization ID.");

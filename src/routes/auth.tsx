@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,15 +11,15 @@ import "@lovable.dev/cloud-auth-js/styles.css";
 import { oauthReturnPath } from "@/lib/oauth-return-path";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ next: oauthReturnPath(s.next ?? "/interviews") }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } => ({ next: oauthReturnPath(s['next'] ?? "/interviews") }),
   head: () => ({ meta: [{ title: "Sign in | CareerPilot" }, { name: "description", content: "Sign in to save your CareerPilot interview scores and progress." }, { property: "og:title", content: "Sign in | CareerPilot" }, { property: "og:description", content: "Your private career preparation progress." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AuthPage,
 });
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup" | "reset">("signin");
   const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [busy, setBusy] = useState(false); const [notice, setNotice] = useState("");
-  const { user } = useSession(); const navigate = useNavigate();
-  const { next } = Route.useSearch();
+  const { user } = useSession();
+  const next = Route.useSearch().next ?? "/interviews";
   useEffect(() => { if (user) window.location.assign(next); }, [user, next]);
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setBusy(true); setNotice("");
