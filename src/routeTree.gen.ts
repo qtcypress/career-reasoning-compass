@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyzeRouteImport } from './routes/analyze'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as InterviewsRouteImport } from './routes/interviews'
 import { Route as ProblemsRouteImport } from './routes/problems'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProblemsIndexRouteImport } from './routes/problems.index'
@@ -30,6 +31,11 @@ const AnalyzeRoute = AnalyzeRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InterviewsRoute = InterviewsRouteImport.update({
+  id: '/interviews',
+  path: '/interviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProblemsRoute = ProblemsRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analyze': typeof AnalyzeRoute
   '/auth': typeof AuthRoute
+  '/interviews': typeof InterviewsRoute
   '/problems': typeof ProblemsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analyze': typeof AnalyzeRoute
   '/auth': typeof AuthRoute
+  '/interviews': typeof InterviewsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
   '/problems': typeof ProblemsIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analyze': typeof AnalyzeRoute
   '/auth': typeof AuthRoute
+  '/interviews': typeof InterviewsRoute
   '/problems': typeof ProblemsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analyze'
     | '/auth'
+    | '/interviews'
     | '/problems'
     | '/reset-password'
     | '/problems/$problemId'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analyze'
     | '/auth'
+    | '/interviews'
     | '/reset-password'
     | '/problems/$problemId'
     | '/problems'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analyze'
     | '/auth'
+    | '/interviews'
     | '/problems'
     | '/reset-password'
     | '/problems/$problemId'
@@ -113,6 +125,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyzeRoute: typeof AnalyzeRoute
   AuthRoute: typeof AuthRoute
+  InterviewsRoute: typeof InterviewsRoute
   ProblemsRoute: typeof ProblemsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interviews': {
+      id: '/interviews'
+      path: '/interviews'
+      fullPath: '/interviews'
+      preLoaderRoute: typeof InterviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/problems': {
@@ -189,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyzeRoute: AnalyzeRoute,
   AuthRoute: AuthRoute,
+  InterviewsRoute: InterviewsRoute,
   ProblemsRoute: ProblemsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
 }
