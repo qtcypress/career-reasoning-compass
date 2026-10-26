@@ -295,7 +295,7 @@ export const PATH_QUIZZES: Record<string, QuizQuestion[]> = {
       explanation: "Consistent metric definitions and counting boundaries are necessary before comparing results."
     }
   ],
-  datascience: [
+  "data-science": [
     {
       id: "preprocessing-leakage",
       topic: "Data Preparation & Feature Engineering",
@@ -393,7 +393,7 @@ export const PATH_QUIZZES: Record<string, QuizQuestion[]> = {
       explanation: "A shared cause such as warm weather can create an association without either measured variable causing the other."
     }
   ],
-  aiml: [
+  ml: [
     {
       id: "gradient-update",
       topic: "Neural Networks & Optimization",
@@ -589,7 +589,7 @@ export const PATH_QUIZZES: Record<string, QuizQuestion[]> = {
       explanation: "Request-time retrieval can expose the current policy text without requiring repeated model-weight updates."
     }
   ],
-  agenticai: [
+  agents: [
     {
       id: "tool-schema",
       topic: "Tool Use & Agent Control",
@@ -687,7 +687,7 @@ export const PATH_QUIZZES: Record<string, QuizQuestion[]> = {
       explanation: "Least privilege grants only the operations and data access required for the agent's assigned task."
     }
   ],
-  cyber: [
+  security: [
     {
       id: "integrity",
       topic: "Security Fundamentals",
@@ -785,7 +785,7 @@ export const PATH_QUIZZES: Record<string, QuizQuestion[]> = {
       explanation: "Object-level authorization must verify that the caller may access each requested resource regardless of its identifier."
     }
   ],
-  cloud: [
+  devops: [
     {
       id: "shared-responsibility",
       topic: "Cloud Architecture & IAM",
