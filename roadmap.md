@@ -7,11 +7,13 @@
 - [x] Add questions for all nine home-page career tracks and technical/HR rounds.
 - [x] Add Groq scoring, private saved history, and score summaries.
 - [x] Add sign-in.
-- [ ] Verify a complete interview with saved results — blocked: no signed-up account exists; user must sign in first.
+- [x] Verify a complete interview with saved results — signed in with a test account, scored 23%, history shows the saved entry.
 
 # Assessments
 - [x] Add programming, data structures, and algorithms quizzes with scores and weak areas.
 - [x] Verify scoring and answer review.
+- [x] Expand assessments to all nine career paths with per-path concept quizzes and weak areas.
+- [x] Verify per-path quiz scoring and weak areas in browser (Cyber Security: 25%, three weak topics listed).
 
 # Resume builder
 - [x] Add editable resumes tailored to all nine career paths.
