@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
+- Use the uploaded brand logo asset in the shared site header and derive the favicon from its symbol; global semantic tokens control the app palette so all preparation pages remain consistent.
 - MCP tools are OAuth-protected, read-only, and query scores with the verified caller token and existing owner RLS; browser-local tools register only in their owning pages with privacy-safe telemetry.
 - Grade assessments with a deterministic shared answer key and report every topic containing missed answers; PDF resumes embed a Unicode font and wrap/paginate text without inventing credentials.
 - Share the career track catalog across the home page, interviews, and resumes so all nine paths stay aligned.
