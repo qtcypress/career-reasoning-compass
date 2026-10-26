@@ -6,6 +6,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 import hero from "@/assets/hero.jpg";
+import { PROBLEMS } from "@/lib/problems";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,7 +47,7 @@ const years = [
 ];
 const features = [
   { icon: Flame, t: "Daily Missions", d: "Small daily goals that compound into real skill." },
-  { icon: Code2, t: "DSA & Coding", d: "10,000+ real-world problems with step-by-step visualisation." },
+  { icon: Code2, t: "DSA & Coding", d: `${PROBLEMS.length} coding interview questions with examples, constraints and AI plan evaluation.` },
   { icon: Brain, t: "Aptitude & Reasoning", d: "Quant, logical and verbal practice for every test pattern." },
   { icon: MessageSquare, t: "Communication Lab", d: "Speak, present and write with AI feedback." },
   { icon: FileText, t: "Resume & Profile", d: "ATS-ready resumes built from your actual progress." },
@@ -55,14 +56,7 @@ const features = [
   { icon: Trophy, t: "Contests & Challenges", d: "Compete, rank and stay consistent." },
   { icon: BarChart3, t: "Progress Analytics", d: "See readiness rise week after week." },
 ];
-const problems = [
-  "Detect duplicate UPI transactions in a live payment stream",
-  "Apply the best coupon combination at checkout",
-  "Assign each new order to the nearest free delivery partner",
-  "Allocate adjacent seats for a group in a movie hall",
-  "Schedule doctor appointments without time-slot clashes",
-  "Build an LRU cache for “Continue Watching” shows",
-];
+const problems = PROBLEMS.slice(0, 6);
 
 function Index() {
   return (
@@ -162,12 +156,12 @@ function Index() {
             <p className="text-sm font-semibold uppercase tracking-widest text-accent">New · AI Thinking Coach</p>
             <h2 className="mt-2 text-3xl font-bold md:text-4xl">Plan first. Get scored. Fix your thinking.</h2>
             <p className="mt-4 text-muted-foreground">Write how you'd solve a real-world problem. The AI scores your plan, pinpoints exactly where your thinking went wrong, and a mentor walks you through a 2-step correction.</p>
-            <Button asChild variant="hero" size="lg" className="mt-8"><Link to="/analyze">Start an evaluation <ArrowRight /></Link></Button>
+            <Button asChild variant="hero" size="lg" className="mt-8"><Link to="/problems">Explore coding questions <ArrowRight /></Link></Button>
           </div>
           <ul className="space-y-3">
             {problems.map((p) => (
-              <li key={p} className="flex items-center gap-3 rounded-xl border bg-card p-4 text-sm">
-                <Code2 className="h-4 w-4 shrink-0 text-accent" /> {p}
+              <li key={p.id} className="rounded-xl border bg-card text-sm">
+                <Link to="/problems/$problemId" params={{ problemId: p.id }} className="flex items-center gap-3 p-4 hover:text-primary"><Code2 className="h-4 w-4 shrink-0 text-accent" /> {p.title}<ArrowRight className="ml-auto h-4 w-4 shrink-0" /></Link>
               </li>
             ))}
           </ul>
