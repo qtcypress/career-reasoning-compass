@@ -14,11 +14,14 @@ import { Route as AnalyzeRouteImport } from './routes/analyze'
 import { Route as AssessmentsRouteImport } from './routes/assessments'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as InterviewsRouteImport } from './routes/interviews'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ProblemsRouteImport } from './routes/problems'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResumeRouteImport } from './routes/resume'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as ProblemsIndexRouteImport } from './routes/problems.index'
 import { Route as ProblemsProblemIdRouteImport } from './routes/problems.$problemId'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +48,11 @@ const InterviewsRoute = InterviewsRouteImport.update({
   path: '/interviews',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProblemsRoute = ProblemsRouteImport.update({
   id: '/problems',
   path: '/problems',
@@ -60,6 +68,12 @@ const ResumeRoute = ResumeRouteImport.update({
   path: '/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProblemsIndexRoute = ProblemsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -70,6 +84,11 @@ const ProblemsProblemIdRoute = ProblemsProblemIdRouteImport.update({
   path: '/$problemId',
   getParentRoute: () => ProblemsRoute,
 } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,11 +96,14 @@ export interface FileRoutesByFullPath {
   '/assessments': typeof AssessmentsRoute
   '/auth': typeof AuthRoute
   '/interviews': typeof InterviewsRoute
+  '/mcp': typeof McpRoute
   '/problems': typeof ProblemsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
   '/problems/': typeof ProblemsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,10 +111,13 @@ export interface FileRoutesByTo {
   '/assessments': typeof AssessmentsRoute
   '/auth': typeof AuthRoute
   '/interviews': typeof InterviewsRoute
+  '/mcp': typeof McpRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
   '/problems': typeof ProblemsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,11 +126,14 @@ export interface FileRoutesById {
   '/assessments': typeof AssessmentsRoute
   '/auth': typeof AuthRoute
   '/interviews': typeof InterviewsRoute
+  '/mcp': typeof McpRoute
   '/problems': typeof ProblemsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/problems/$problemId': typeof ProblemsProblemIdRoute
   '/problems/': typeof ProblemsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,11 +143,14 @@ export interface FileRouteTypes {
     | '/assessments'
     | '/auth'
     | '/interviews'
+    | '/mcp'
     | '/problems'
     | '/reset-password'
     | '/resume'
+    | '/.well-known/oauth-protected-resource'
     | '/problems/$problemId'
     | '/problems/'
+    | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -127,10 +158,13 @@ export interface FileRouteTypes {
     | '/assessments'
     | '/auth'
     | '/interviews'
+    | '/mcp'
     | '/reset-password'
     | '/resume'
+    | '/.well-known/oauth-protected-resource'
     | '/problems/$problemId'
     | '/problems'
+    | '/.lovable/oauth/consent'
   id:
     | '__root__'
     | '/'
@@ -138,11 +172,14 @@ export interface FileRouteTypes {
     | '/assessments'
     | '/auth'
     | '/interviews'
+    | '/mcp'
     | '/problems'
     | '/reset-password'
     | '/resume'
+    | '/.well-known/oauth-protected-resource'
     | '/problems/$problemId'
     | '/problems/'
+    | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -151,9 +188,12 @@ export interface RootRouteChildren {
   AssessmentsRoute: typeof AssessmentsRoute
   AuthRoute: typeof AuthRoute
   InterviewsRoute: typeof InterviewsRoute
+  McpRoute: typeof McpRoute
   ProblemsRoute: typeof ProblemsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResumeRoute: typeof ResumeRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -193,6 +233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InterviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/problems': {
       id: '/problems'
       path: '/problems'
@@ -214,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/problems/': {
       id: '/problems/'
       path: '/'
@@ -227,6 +281,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/problems/$problemId'
       preLoaderRoute: typeof ProblemsProblemIdRouteImport
       parentRoute: typeof ProblemsRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -251,9 +312,13 @@ const rootRouteChildren: RootRouteChildren = {
   AssessmentsRoute: AssessmentsRoute,
   AuthRoute: AuthRoute,
   InterviewsRoute: InterviewsRoute,
+  McpRoute: McpRoute,
   ProblemsRoute: ProblemsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   ResumeRoute: ResumeRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
