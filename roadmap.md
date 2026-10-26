@@ -16,3 +16,7 @@
 # Resume builder
 - [x] Add editable resumes tailored to all nine career paths.
 - [x] Add PDF downloads and verify the generated resume; no layout issues found in the downloaded PDF.
+
+# Agent integrations
+- [ ] Add OAuth-protected MCP tools and consent with preserved sign-in return paths.
+- [ ] Add browser-local tools and verify the generated catalog.
