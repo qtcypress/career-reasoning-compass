@@ -1,19 +1,26 @@
-// Server-only AI provider selection. Default: Lovable AI Gateway.
-// Later: set AI_PROVIDER=openai + OPENAI_API_KEY, or AI_PROVIDER=groq + GROQ_API_KEY.
+// Server-only AI provider selection. Default: the user's linked Groq account.
 import { createOpenAI } from "@ai-sdk/openai";
 import { streamText, Output } from "ai";
 import type { z } from "zod";
 
 function getModel() {
-  const provider = (process.env["AI_PROVIDER"] || "lovable").toLowerCase();
+  const provider = (process.env["AI_PROVIDER"] || "groq").toLowerCase();
   if (provider === "openai" && process.env["OPENAI_API_KEY"]) {
     const openai = createOpenAI({ apiKey: process.env["OPENAI_API_KEY"] });
     return { model: openai.responses(process.env["AI_MODEL"] || "gpt-4.1-mini"), reasoning: false };
   }
-  if (provider === "groq" && process.env["GROQ_API_KEY"]) {
-    const groq = createOpenAI({ apiKey: process.env["GROQ_API_KEY"], baseURL: "https://api.groq.com/openai/v1" });
-    return { model: groq.chat(process.env["AI_MODEL"] || "llama-3.3-70b-versatile"), reasoning: false };
+  if (provider === "groq") {
+    const key = process.env["LOVABLE_API_KEY"];
+    const connectionKey = process.env["UDC_GROQ_API_KEY"];
+    if (!key || !connectionKey) throw new Error("Connect your Groq account in Settings → Connectors to use the thinking coach.");
+    const groq = createOpenAI({
+      apiKey: key,
+      baseURL: "https://connector-gateway.lovable.dev/udc_groq/openai/v1",
+      headers: { "X-Connection-Api-Key": connectionKey },
+    });
+    return { model: groq.chat(process.env["AI_MODEL"] || "openai/gpt-oss-20b"), reasoning: false };
   }
+  if (provider !== "lovable") throw new Error("The selected AI provider is not configured. Check your AI account settings.");
   const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("AI is not configured (missing LOVABLE_API_KEY).");
   let runId: string | undefined;
@@ -55,8 +62,10 @@ export async function generateStructured<T>(schema: z.ZodType<T>, system: string
   } catch (e) {
     const err = streamError ?? e;
     const status = (err as { statusCode?: number })?.statusCode;
-    if (status === 429) throw new Error("The AI is busy right now. Please try again in a moment.");
-    if (status === 402) throw new Error("AI credits are used up. Add credits in Settings → Plans & credits.");
-    throw new Error(err instanceof Error ? err.message : "AI request failed.");
+    if (status === 429) throw new Error("Your AI account's rate limit was reached. Wait a moment and try again.");
+    if (status === 402) throw new Error("Your AI account has insufficient balance. Check billing with your AI provider.");
+    if (status === 401 || status === 403) throw new Error("Your AI connection could not authorize this request. Check the connection and model access in your account.");
+    // Do not return SDK request/response diagnostics, which may include credentials.
+    throw new Error("The AI could not complete this request. Please try again or check your AI account's model access.");
   }
 }

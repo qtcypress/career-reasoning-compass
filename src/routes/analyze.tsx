@@ -19,6 +19,8 @@ export const Route = createFileRoute("/analyze")({
       { name: "description", content: "Plan a solution, get a % correctness score, see your mistakes and fix your thinking with a 2-step AI mentor." },
       { property: "og:title", content: "AI Thinking Coach | CareerPilot" },
       { property: "og:description", content: "Get your solution plan scored and your thinking corrected by an AI mentor." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Analyze,
@@ -52,7 +54,7 @@ function Analyze() {
   const m1Fn = useServerFn(mentorStep1);
   const m2Fn = useServerFn(mentorStep2);
 
-  const [problem, setProblem] = useState(SAMPLES[0]);
+  const [problem, setProblem] = useState(SAMPLES[0] ?? "");
   const [plan, setPlan] = useState("");
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
   const [hint, setHint] = useState<MentorHint | null>(null);
