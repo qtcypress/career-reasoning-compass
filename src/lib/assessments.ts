@@ -1,7 +1,6 @@
-import { CAREERS } from "./careers";
-import { PATH_QUIZZES } from "./assessment-quizzes";
+import { PATH_QUIZZES, type QuizQuestion } from "./assessment-quizzes";
 
-export type QuizQuestion = { id: string; topic: string; question: string; options: string[]; correct: number; explanation: string };
+export type { QuizQuestion };
 
 export function quizFor(trackId: string): QuizQuestion[] {
   return PATH_QUIZZES[trackId] ?? [];
@@ -20,5 +19,3 @@ export function gradeQuiz(questions: QuizQuestion[], answers: Record<string, num
   });
   return { correct, total: questions.length, score: questions.length ? Math.round(correct / questions.length * 100) : 0, areas, weakAreas: areas.filter((a) => a.correct < a.total) };
 }
-
-export { CAREERS };
