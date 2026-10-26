@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Difficulty } from "@/components/ProblemStatement";
 import { PROBLEMS, TOPICS, filterProblems } from "@/lib/problems";
+import { useWebMCP } from "use-webmcp-tool";
+import { runWebMCPTool } from "@/lib/webmcp-telemetry";
 
 export const Route = createFileRoute("/problems/")({
   head: () => ({ meta: [
@@ -23,6 +25,7 @@ function ProblemBank() {
   const [difficulty, setDifficulty] = useState("All");
   const [topic, setTopic] = useState("All");
   const results = filterProblems(query, difficulty, topic);
+  useWebMCP({ name: "read_visible_problems", description: "Read the coding questions currently visible with the active filters.", annotations: { readOnlyHint: true }, execute: () => runWebMCPTool("read_visible_problems", () => results.map(p => `${p.id}: ${p.title} (${p.difficulty})`).join("\n") || "No questions shown.") });
   return <div className="min-h-screen bg-background"><SiteHeader />
     <main className="mx-auto max-w-6xl px-5 py-12">
       <p className="text-sm font-semibold uppercase text-muted-foreground">Coding practice</p>

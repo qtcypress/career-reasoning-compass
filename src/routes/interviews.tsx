@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useWebMCP } from "use-webmcp-tool";
+import { runWebMCPTool } from "@/lib/webmcp-telemetry";
 
 export const Route = createFileRoute("/interviews")({
   validateSearch: (search: Record<string, unknown>): { track?: string } => typeof search["track"] === "string" && CAREERS.some((c) => c.id === search["track"]) ? { track: search["track"] } : {},
@@ -32,6 +34,7 @@ function Interviews({ initialTrack }: { initialTrack: string }) {
   const [reviewId,setReviewId] = useState<string | null>(null);
   const reviewRow = history.data?.find((s) => s.id === reviewId);
   const review = reviewRow ? interviewResult.safeParse(reviewRow.results) : null;
+  useWebMCP({ name: "read_interview_view", description: "Read the current career path, interview questions, and visible score history.", annotations: { readOnlyHint: true }, execute: () => runWebMCPTool("read_interview_view", () => `${career?.name} · ${round}\n${active ? current?.question ?? "" : result ? `Latest score: ${result.score}%` : questions.map(q => q.question).join("\n")}\n${active ? "Score history is not shown during an interview." : history.isFetching ? "Scores are loading." : history.isError ? "Scores could not be loaded." : rows.map(s => `${s.id}: ${s.round} ${s.score}%`).join("\n") || "No saved scores shown."}`) });
   async function finish() {
     setBusy(true);
     try { const res = await scoreFn({ data: { trackId, round, answers } }); setResult(res); setActive(false); await client.invalidateQueries({ queryKey: ["interviews"] }); }

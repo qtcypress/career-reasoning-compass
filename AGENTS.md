@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
+- MCP tools are OAuth-protected, read-only, and query scores with the verified caller token and existing owner RLS; browser-local tools register only in their owning pages with privacy-safe telemetry.
 - Grade assessments with a deterministic shared answer key and report every topic containing missed answers; PDF resumes embed a Unicode font and wrap/paginate text without inventing credentials.
 - Share the career track catalog across the home page, interviews, and resumes so all nine paths stay aligned.
 - Store interview results in Cloud with owner-only row policies; scoring uses authenticated Groq server functions and session state has one root subscriber.
