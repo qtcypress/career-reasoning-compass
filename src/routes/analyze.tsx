@@ -15,7 +15,7 @@ import {
 } from "@/lib/analyzer.functions";
 
 export const Route = createFileRoute("/analyze")({
-  validateSearch: (search: Record<string, unknown>): { problem?: string } => ({ problem: typeof search.problem === "string" ? search.problem : undefined }),
+  validateSearch: (search: Record<string, unknown>): { problem?: string } => typeof search["problem"] === "string" ? { problem: search["problem"] } : {},
   head: () => ({
     meta: [
       { title: "AI Thinking Coach — Evaluate Your Problem-Solving | CareerPilot" },
