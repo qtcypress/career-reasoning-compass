@@ -10,6 +10,8 @@
 - [x] Verify a complete interview with saved results — signed in with a test account, scored 23%, history shows the saved entry.
 
 # Assessments
+- [x] Save real quiz scores to the signed-in account and show private history and per-path weak areas.
+- [ ] Verify authenticated quiz saving and history read-back — waiting for the user to sign in with their own account; no matching account is available for managed verification.
 - [x] Add programming, data structures, and algorithms quizzes with scores and weak areas.
 - [x] Verify scoring and answer review.
 - [x] Expand assessments to all nine career paths with per-path concept quizzes and weak areas.

@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_sessions: {
+        Row: {
+          areas: Json
+          correct: number
+          created_at: string
+          id: string
+          score: number
+          topic: string
+          total: number
+          track_id: string
+          user_id: string
+        }
+        Insert: {
+          areas: Json
+          correct: number
+          created_at?: string
+          id: string
+          score: number
+          topic?: string
+          total: number
+          track_id: string
+          user_id: string
+        }
+        Update: {
+          areas?: Json
+          correct?: number
+          created_at?: string
+          id?: string
+          score?: number
+          topic?: string
+          total?: number
+          track_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       interview_sessions: {
         Row: {
           created_at: string
