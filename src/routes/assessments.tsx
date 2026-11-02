@@ -1,5 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { saveAssessment, listAssessments } from "@/lib/assessments.functions";
+import { useSession } from "@/components/SessionProvider";
+import { AssessmentTracker } from "@/components/AssessmentTracker";
 import { ArrowRight, ArrowLeft, RotateCcw, CheckCircle2 } from "lucide-react";
 import { CAREERS } from "@/lib/careers";
 import { quizFor, quizTopics, gradeQuiz } from "@/lib/assessments";
@@ -14,13 +19,29 @@ export const Route = createFileRoute("/assessments")({
   head: () => ({ meta: [{ title: "Skills Assessments for Nine Career Paths | CareerPilot" }, { name: "description", content: "Test your concepts on any of nine career paths with quizzes, scores and weak-area feedback." }, { property: "og:title", content: "Skills Assessments | CareerPilot" }, { property: "og:description", content: "Find your strengths and gaps on your career path." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: AssessmentsPage,
 });
-function AssessmentsPage() { const { track } = Route.useSearch(); return <Assessments key={track} initialTrack={track ?? "java"} />; }
+function AssessmentsPage() { const { track } = Route.useSearch(); const { user } = useSession(); return <Assessments key={`${track}:${user?.id ?? "guest"}`} initialTrack={track ?? "java"} />; }
 function Assessments({ initialTrack }: { initialTrack: string }) {
+  const { user, ready } = useSession();
+  const client = useQueryClient();
+  const saveFn = useServerFn(saveAssessment); const historyFn = useServerFn(listAssessments);
+  const history = useQuery({ queryKey: ["assessments", user?.id], queryFn: () => historyFn(), enabled: ready && Boolean(user) });
+  const [attemptId, setAttemptId] = useState("");
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [trackId, setTrackId] = useState(initialTrack);
   const [topic, setTopic] = useState("All topics"); const [started, setStarted] = useState(false); const [done, setDone] = useState(false); const [index, setIndex] = useState(0); const [answers, setAnswers] = useState<Record<string, number>>({});
   const quiz = quizFor(trackId); const topics = quizTopics(trackId); const career = CAREERS.find((c) => c.id === trackId);
   const questions = topic === "All topics" ? quiz : quiz.filter((q) => q.topic === topic); const q = questions[index]; const grade = gradeQuiz(questions, answers);
-  function reset() { setStarted(false); setDone(false); setIndex(0); setAnswers({}); }
+  const rows = (history.data ?? []).filter(row => row.track_id === trackId);
+  function reset() { setStarted(false); setDone(false); setIndex(0); setAnswers({}); setSaveState("idle"); setAttemptId(""); }
+  async function finish() {
+    if (!user) return;
+    setDone(true); setSaveState("saving");
+    try {
+      await saveFn({ data: { attemptId, trackId, topic, answers } });
+      setSaveState("saved");
+      await client.invalidateQueries({ queryKey: ["assessments", user.id] });
+    } catch { setSaveState("error"); }
+  }
   return <div className="min-h-screen bg-background"><SiteHeader /><main className="mx-auto max-w-4xl px-5 py-12"><p className="text-sm uppercase font-semibold text-muted-foreground">Skills check</p><h1 className="mt-2 text-3xl font-bold">Assessments</h1>
     <div className="mt-6 max-w-xs"><label className="text-sm font-semibold">Career path</label><Select value={trackId} onValueChange={(v) => { setTrackId(v); setTopic("All topics"); reset(); }} disabled={started && !done}><SelectTrigger className="mt-2" aria-label="Assessment career path"><SelectValue /></SelectTrigger><SelectContent>{CAREERS.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent></Select></div>
     {!started && !done && <section className="mt-8"><div className="flex flex-wrap gap-2">{["All topics", ...topics].map((t) => <Button key={t} variant={topic === t ? "default" : "outline"} onClick={() => setTopic(t)}>{t}</Button>)}</div><div className="mt-8 grid gap-5 sm:grid-cols-3">{topics.map((t) => <article key={t} className="rounded-lg border bg-card p-5"><h2 className="font-semibold">{t}</h2><p className="mt-3 text-sm text-muted-foreground">{quiz.filter((x) => x.topic === t).length} questions</p></article>)}</div><p className="mt-7 text-sm text-muted-foreground">{career?.name} · {questions.length} questions · Multiple choice</p><Button variant="hero" className="mt-4" onClick={() => setStarted(true)}>Start assessment <ArrowRight /></Button></section>}
