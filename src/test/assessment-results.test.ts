@@ -8,11 +8,13 @@ describe("saved assessments", () => {
     expect(CAREERS).toHaveLength(9);
     for (const career of CAREERS) {
       const quiz = quizFor(career.id);
+      const first = quiz[0];
+      if (!first) throw new Error("Missing quiz questions");
       const answers = Object.fromEntries(quiz.map(q => [q.id, q.correct]));
-      answers[quiz[0].id] = (quiz[0].correct + 1) % 4;
+      answers[first.id] = (first.correct + 1) % 4;
       const result = evaluateAssessment({ attemptId: "a8b030b8-4e0c-4ac6-9bde-7aabf31c3862", trackId: career.id, topic: "All topics", answers });
       expect(result.score).toBe(92);
-      expect(result.weakAreas.map(a => a.topic)).toEqual([quiz[0].topic]);
+      expect(result.weakAreas.map(a => a.topic)).toEqual([first.topic]);
     }
   });
   it("rejects incomplete quizzes and invalid choices", () => {
